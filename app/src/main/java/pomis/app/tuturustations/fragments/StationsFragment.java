@@ -1,6 +1,7 @@
 package pomis.app.tuturustations.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -18,8 +19,10 @@ import butterknife.Unbinder;
 import io.realm.Case;
 import io.realm.Realm;
 import pomis.app.tuturustations.R;
+import pomis.app.tuturustations.activities.StationActivity;
 import pomis.app.tuturustations.adapters.TutusAdapter;
 import pomis.app.tuturustations.data.RealmInstance;
+import pomis.app.tuturustations.helpers.InsensitiveSearch;
 import pomis.app.tuturustations.models.City;
 import pomis.app.tuturustations.models.CityFrom;
 import pomis.app.tuturustations.models.CityTo;
@@ -36,6 +39,8 @@ import pomis.app.tuturustations.models.StationTo;
 public class StationsFragment extends Fragment {
 
     private static final String MY_TAG = "TutuDegug";
+    private static final int REQUEST_CODE = 0x1;
+
     @BindView(R.id.lv_stations)
     ListView lvStations;
 
@@ -45,6 +50,7 @@ public class StationsFragment extends Fragment {
     private Unbinder unbinder;
     private TutusAdapter adapter;
     private Realm realm;
+    String type;
 
     private int lastClickedItemPosition = -1;
     private boolean stationsExpanded = false;
@@ -55,7 +61,7 @@ public class StationsFragment extends Fragment {
 
 
     void readIntent() {
-        String type = getActivity()
+        type = getActivity()
                 .getIntent()
                 .getStringExtra("type");
         if (type.equals("from")) {
@@ -91,9 +97,11 @@ public class StationsFragment extends Fragment {
                             .findAll());
         else
             adapter = new TutusAdapter(getContext(), 0,
-                    realm.where(cityClass)
-                            .contains("name", searchParam, Case.INSENSITIVE)
-                            .findAll());
+                    InsensitiveSearch
+                            .search(realm
+                                    .where(cityClass)
+                                    .findAll(),
+                                    searchParam));
 
         lvStations.setAdapter(adapter);
 
@@ -128,11 +136,21 @@ public class StationsFragment extends Fragment {
                                         .findAll());
                         adapter.notifyDataSetChanged();
                         stationsExpanded = true;
+                    } else if (adapter.get(position) instanceof Station) {
+                        openStation(((Station) adapter.get(position)).getName());
                     }
                 }
 
             }
         });
+    }
+
+    private void openStation(String name) {
+        startActivityForResult(
+                new Intent(getContext(), StationActivity.class)
+                        .putExtra("name", name)
+                        .putExtra("type", type),
+                REQUEST_CODE);
     }
 
     @OnTextChanged(R.id.et_search)

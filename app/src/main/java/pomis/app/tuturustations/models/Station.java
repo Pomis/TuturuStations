@@ -18,4 +18,10 @@ public interface Station {
 
     void setCity(String city);
     String getName();
+
+    double getLat();
+
+    double getLon();
+
+    String getCity();
 }

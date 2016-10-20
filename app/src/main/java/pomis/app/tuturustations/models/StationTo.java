@@ -41,6 +41,17 @@ public class StationTo extends RealmObject implements Station, Tutu{
         return title;
     }
 
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public String getCity() {
+        return city;
+    }
 
     public void setCity(String city){
         this.city = city;
