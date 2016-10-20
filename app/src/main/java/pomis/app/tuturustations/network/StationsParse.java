@@ -1,0 +1,218 @@
+package pomis.app.tuturustations.network;
+
+import android.content.Context;
+import android.util.Log;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+
+import java.io.InputStream;
+
+import io.realm.Realm;
+import io.realm.RealmModel;
+import pomis.app.tuturustations.data.RealmInstance;
+import pomis.app.tuturustations.models.City;
+import pomis.app.tuturustations.models.CityFrom;
+import pomis.app.tuturustations.models.CityTo;
+import pomis.app.tuturustations.models.Country;
+import pomis.app.tuturustations.models.CountryFrom;
+import pomis.app.tuturustations.models.CountryTo;
+import pomis.app.tuturustations.models.Station;
+import pomis.app.tuturustations.models.StationFrom;
+import pomis.app.tuturustations.models.StationTo;
+
+/**
+ * Created by romanismagilov on 20.10.16.
+ */
+
+public class StationsParse {
+    enum Type {
+        TO, FROM
+    }
+
+    private static final String MY_TAG = "TutuDebug";
+
+    // Ссылка на таск для публикации прогресса
+    StationsTask asyncTask;
+    // Времененные переменные для записи в бд во время парсинга
+    String cityTitle;
+    String countryName;
+    double cityLat;
+    double cityLon;
+    int cityId;
+    Realm realm;
+    String stationTitle;
+    int stationId;
+    double stationLat;
+    double stationLon;
+
+    public void parse(StationsTask stationsTask, Context context, InputStream in) throws Exception {
+        realm = RealmInstance.getInstance(context);
+        this.asyncTask = stationsTask;
+        JsonFactory jfactory = new JsonFactory();
+
+        JsonParser jParser = jfactory.createParser(in);
+
+        while (jParser.nextToken() != JsonToken.END_OBJECT) {
+            String fieldname = jParser.getCurrentName();
+            if (fieldname != null) {
+                jParser.nextToken();
+                switch (fieldname) {
+                    case "citiesFrom":
+                        stationsTask.publish("Города отправления...");
+                        parseStationArray(Type.FROM, jParser);
+                        break;
+                    case "citiesTo":
+                        stationsTask.publish("Города прибытия...");
+                        parseStationArray(Type.TO, jParser);
+                        break;
+                }
+            }
+        }
+        stationsTask.publish("Готово!");
+
+        jParser.close();
+    }
+
+
+    void parseStationArray(final Type type, JsonParser jParser) throws Exception {
+        String token = "";
+        while (!token.equals("]")) {
+            jParser.nextValue();
+            while (jParser.nextToken() != JsonToken.END_OBJECT) {
+                String currentName = jParser.getCurrentName();
+                if (currentName != null) {
+                    jParser.nextToken();
+
+                    switch (currentName) {
+                        case "cityTitle":
+                            cityTitle = jParser.getText();
+                            break;
+                        case "cityId":
+                            cityId = jParser.getIntValue();
+                            break;
+                        case "countryTitle":
+                            countryName = jParser.getText();
+                            break;
+                        case "point":
+                            while (jParser.nextToken() != JsonToken.END_OBJECT) {
+                                currentName = jParser.getCurrentName();
+                                if (currentName != null) {
+                                    jParser.nextToken();
+                                    switch (currentName) {
+                                        case "longitude":
+                                            cityLon = jParser.getDoubleValue();
+                                            break;
+                                        case "latitude":
+                                            cityLat = jParser.getDoubleValue();
+                                            break;
+                                    }
+                                }
+                            }
+                            break;
+                        case "stations":
+                            while (jParser.nextToken() != JsonToken.END_ARRAY) {
+                                while (jParser.nextToken() != JsonToken.END_OBJECT) {
+                                    currentName = jParser.getCurrentName();
+                                    if (currentName != null) {
+                                        jParser.nextToken();
+                                        switch (currentName) {
+                                            case "stationTitle":
+                                                stationTitle = jParser.getText();
+                                                break;
+                                            case "stationId":
+                                                stationId = jParser.getIntValue();
+                                                break;
+                                            case "point":
+                                                while (jParser.nextToken() != JsonToken.END_OBJECT) {
+                                                    currentName = jParser.getCurrentName();
+                                                    if (currentName != null) {
+                                                        jParser.nextToken();
+                                                        switch (currentName) {
+                                                            case "longitude":
+                                                                stationLon = jParser.getDoubleValue();
+                                                                break;
+                                                            case "latitude":
+                                                                stationLat = jParser.getDoubleValue();
+                                                                break;
+                                                        }
+                                                    }
+                                                }
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                }
+                                realm.executeTransaction(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
+                                        switch (type) {
+                                            case FROM:
+                                                StationFrom station = new StationFrom();
+                                                station.setLat(stationLat);
+                                                station.setLon(stationLon);
+                                                station.setTitle(stationTitle);
+                                                station.setStationId(stationId);
+                                                realm.copyToRealmOrUpdate(station);
+                                                //Log.d(MY_TAG, "station saved: " + station.toString());
+                                                break;
+
+                                            case TO:
+                                                StationTo stationTo = new StationTo();
+                                                stationTo.setLat(stationLat);
+                                                stationTo.setLon(stationLon);
+                                                stationTo.setTitle(stationTitle);
+                                                stationTo.setStationId(stationId);
+                                                realm.copyToRealmOrUpdate(stationTo);
+                                                //Log.d(MY_TAG, "stationTO saved: " + stationTo.toString());
+                                                break;
+                                        }
+                                    }
+                                });
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    switch (type){
+                        case TO:
+                            CityTo cityTo = new CityTo();
+                            cityTo.cityId = cityId;
+                            cityTo.name = cityTitle;
+                            cityTo.lat = cityLat;
+                            cityTo.lon = cityLon;
+                            realm.copyToRealmOrUpdate(cityTo);
+
+                            CountryTo countryTo = new CountryTo();
+                            countryTo.title = countryName;
+                            realm.copyToRealmOrUpdate(countryTo);
+                            break;
+
+                        case FROM:
+                            CityFrom cityFrom = new CityFrom();
+                            cityFrom.cityId = cityId;
+                            cityFrom.name = cityTitle;
+                            cityFrom.lat = cityLat;
+                            cityFrom.lon = cityLon;
+                            realm.copyToRealmOrUpdate(cityFrom);
+
+                            CountryFrom countryFrom = new CountryFrom();
+                            countryFrom.title = countryName;
+                            realm.copyToRealmOrUpdate(countryFrom);
+                            break;
+                    }
+                }
+            });
+            token = jParser.nextToken().asString();
+
+        }
+
+    }
+}
