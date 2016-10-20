@@ -14,6 +14,7 @@ public class StationFrom extends RealmObject implements Station, Tutu{
     public double lat;
     public double lon;
     public String title;
+    public String city;
 
     @Override
     public String toString() {
@@ -34,5 +35,14 @@ public class StationFrom extends RealmObject implements Station, Tutu{
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setCity(String city){
+        this.city = city;
+    }
+
+    @Override
+    public String getName() {
+        return title;
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import pomis.app.tuturustations.R;
 import pomis.app.tuturustations.models.City;
 import pomis.app.tuturustations.models.Country;
+import pomis.app.tuturustations.models.Station;
 import pomis.app.tuturustations.models.Tutu;
 
 /**
@@ -22,19 +23,19 @@ import pomis.app.tuturustations.models.Tutu;
 
 public class TutusAdapter extends ArrayAdapter {
 
-    private final List<Tutu> countryList;
-    List<Tutu> toRemove;
+    private final List<Tutu> tutusList;
+    List<Tutu> toRemove = new ArrayList<>();;
 
 
     public TutusAdapter(Context context, int resource, List objects) {
         super(context, resource, objects);
-        this.countryList = new ArrayList<>(objects);
+        this.tutusList = new ArrayList<>(objects);
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (countryList.get(position) instanceof Country) {
+        if (tutusList.get(position) instanceof Country) {
             CountryViewHolder holder;
 //            if (convertView == null) {
                 convertView = LayoutInflater
@@ -46,9 +47,9 @@ public class TutusAdapter extends ArrayAdapter {
 //            } else {
 //                holder = (CountryViewHolder) convertView.getTag();
 //            }
-            Country country = (Country) countryList.get(position);
+            Country country = (Country) tutusList.get(position);
             holder.country.setText(country.getTitle());
-        } else if (countryList.get(position) instanceof City) {
+        } else if (tutusList.get(position) instanceof City) {
             CityViewHolder holder;
 //            if (convertView == null) {
                 convertView = LayoutInflater
@@ -61,16 +62,33 @@ public class TutusAdapter extends ArrayAdapter {
 //            else {
 //                holder = (CityViewHolder) convertView.getTag();
 //            }
-            City city = (City) countryList.get(position);
-            holder.city.setText(city.getName());
+            City city = (City) tutusList.get(position);
+            holder.city.setText(city.getTitle());
+        } else if (tutusList.get(position) instanceof Station) {
+            StationViewHolder holder;
+            convertView = LayoutInflater
+                    .from(getContext())
+                    .inflate(R.layout.item_station, null);
+            holder = new StationViewHolder();
+            holder.station = (TextView) convertView.findViewById(R.id.tv_station);
+            convertView.setTag(holder);
+            Station station = (Station) tutusList.get(position);
+            holder.station.setText(station.getName());
         }
         return convertView;
     }
 
-    public void removeCities() {
-        toRemove = new ArrayList<>();
-        for (Tutu tutu : countryList){
+    public void selectCitiesToDelete() {
+        for (Tutu tutu : tutusList){
             if (tutu instanceof City){
+                toRemove.add(tutu);
+            }
+        }
+    }
+
+    public void selectStationsToDelete() {
+        for (Tutu tutu : tutusList){
+            if (tutu instanceof Station){
                 toRemove.add(tutu);
             }
         }
@@ -78,7 +96,12 @@ public class TutusAdapter extends ArrayAdapter {
 
     @Override
     public int getCount() {
-        return countryList.size();
+        return tutusList.size();
+    }
+
+    public void deleteSelection() {
+        tutusList.removeAll(toRemove);
+        toRemove.clear();
     }
 
     class CountryViewHolder {
@@ -90,12 +113,17 @@ public class TutusAdapter extends ArrayAdapter {
         TextView city;
     }
 
+    class StationViewHolder {
+        TextView station;
+    }
+
     public void addAll(int location, List objects){
-        countryList.addAll(location+1, objects);
-        countryList.removeAll(toRemove);
+        tutusList.addAll(location+1, objects);
+        tutusList.removeAll(toRemove);
+        toRemove.clear();
     }
 
     public Tutu get(int position){
-        return countryList.get(position);
+        return tutusList.get(position);
     }
 }

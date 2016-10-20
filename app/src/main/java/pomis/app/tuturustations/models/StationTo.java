@@ -13,7 +13,7 @@ public class StationTo extends RealmObject implements Station, Tutu{
     public double lat;
     public double lon;
     public String title;
-
+    public String city;
     @Override
     public String toString() {
         return title + ", " + lat + ":" + lon + ", id:" + stationId;
@@ -34,5 +34,15 @@ public class StationTo extends RealmObject implements Station, Tutu{
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String getName() {
+        return title;
+    }
+
+
+    public void setCity(String city){
+        this.city = city;
     }
 }

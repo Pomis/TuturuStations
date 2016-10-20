@@ -19,5 +19,5 @@ public interface City {
 
     public void setCountry(String country);
 
-    String getName();
+    String getTitle();
 }

@@ -164,6 +164,7 @@ public class StationsParse {
                                             station.setLon(stationLon);
                                             station.setTitle(stationTitle);
                                             station.setStationId(stationId);
+                                            station.setCity(cityTitle);
                                             realm.copyToRealmOrUpdate(station);
                                             //Log.d(MY_TAG, "station saved: " + station.toString());
                                             break;
@@ -174,6 +175,7 @@ public class StationsParse {
                                             stationTo.setLon(stationLon);
                                             stationTo.setTitle(stationTitle);
                                             stationTo.setStationId(stationId);
+                                            stationTo.setCity(cityTitle);
                                             realm.copyToRealmOrUpdate(stationTo);
                                             //Log.d(MY_TAG, "stationTO saved: " + stationTo.toString());
                                             break;

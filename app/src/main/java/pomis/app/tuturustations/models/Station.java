@@ -15,4 +15,7 @@ public interface Station {
     void setLon(double lon);
 
     void setTitle(String title);
+
+    void setCity(String city);
+    String getName();
 }

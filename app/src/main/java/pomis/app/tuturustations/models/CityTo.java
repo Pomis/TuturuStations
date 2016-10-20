@@ -46,7 +46,7 @@ public class CityTo extends RealmObject implements City, Tutu {
     }
 
     @Override
-    public String getName() {
+    public String getTitle() {
         return name;
     }
 }

@@ -40,12 +40,20 @@ public class TableFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.tv_from) void openFrom(){
-        startActivityForResult(new Intent(getContext(), StationsActivity.class), REQUEST_FROM);
+    @OnClick(R.id.tv_from)
+    void openFrom() {
+        startActivityForResult(
+                new Intent(getContext(), StationsActivity.class)
+                        .putExtra("type", "from"),
+                REQUEST_FROM);
     }
 
-    @OnClick(R.id.tv_to) void openTo(){
-        startActivityForResult(new Intent(getContext(), StationsActivity.class), REQUEST_TO);
+    @OnClick(R.id.tv_to)
+    void openTo() {
+        startActivityForResult(
+                new Intent(getContext(), StationsActivity.class)
+                        .putExtra("type", "to"),
+                REQUEST_TO);
     }
 
     public TableFragment() {
