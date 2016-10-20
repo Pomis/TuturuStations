@@ -23,6 +23,7 @@ import java.net.URL;
 
 import io.realm.Realm;
 import pomis.app.tuturustations.BuildConfig;
+import pomis.app.tuturustations.activities.DrawerActivity;
 import pomis.app.tuturustations.data.RealmInstance;
 import pomis.app.tuturustations.models.City;
 
@@ -73,6 +74,9 @@ public class StationsTask extends AsyncTask {
     protected void onProgressUpdate(Object[] values) {
         super.onProgressUpdate(values);
         Log.d(MY_TAG, (String) values[0]);
+        if (context!=null){
+            ((DrawerActivity) context).setSubtitle((String) values[0]);
+        }
     }
 
     public void publish(String value){

@@ -7,7 +7,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by romanismagilov on 20.10.16.
  */
 
-public class StationTo extends RealmObject implements Station{
+public class StationTo extends RealmObject implements Station, Tutu{
     @PrimaryKey
     public int stationId;
     public double lat;

@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
  */
 
 // Отдельная таблица для городов отправления
-public class CityFrom extends RealmObject implements City {
+public class CityFrom extends RealmObject implements City, Tutu {
     @PrimaryKey
     public int cityId;
 
@@ -45,4 +45,11 @@ public class CityFrom extends RealmObject implements City {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+
 }

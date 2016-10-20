@@ -8,73 +8,31 @@
     tools:context="pomis.app.tuturustations.fragments.TableFragment">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="@string/from"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="18sp" />
+        style="@style/TextHeader"
+        android:text="@string/from" />
 
     <TextView
-        android:text="Станция отправления"
         android:id="@+id/tv_from"
-        android:padding="@dimen/activity_vertical_margin"
-        android:textSize="17sp"
-        android:textColor="@color/colorPrimaryText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:background="@drawable/background_station_selector" />
+        style="@style/TextButton"
+        android:text="Станция отправления" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="@string/to"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="18sp" />
+        style="@style/TextHeader"
+        android:text="@string/to" />
 
     <TextView
-        android:text="Станция прибытия"
         android:id="@+id/tv_to"
-        android:padding="@dimen/activity_vertical_margin"
-        android:textSize="17sp"
-        android:textColor="@color/colorPrimaryText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:background="@drawable/background_station_selector" />
+        style="@style/TextButton"
+        android:text="Станция прибытия" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:text="@string/when"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="18sp" />
+        style="@style/TextHeader"
+        android:text="@string/when" />
 
 
     <TextView
-        android:text="Время отправления"
         android:id="@+id/tv_when"
-        android:padding="@dimen/activity_vertical_margin"
-        android:textSize="17sp"
-        android:textColor="@color/colorPrimaryText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:background="@drawable/background_station_selector" />
+        style="@style/TextButton"
+        android:text="Время отправления" />
 
 </LinearLayout>

@@ -25,12 +25,13 @@ public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private int currentFragment;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (!PreferenceManager
@@ -69,6 +70,9 @@ public class DrawerActivity extends AppCompatActivity
         }
     }
 
+    public void setSubtitle(String text){
+        toolbar.setSubtitle(text);
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

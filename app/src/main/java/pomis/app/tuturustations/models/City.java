@@ -18,4 +18,6 @@ public interface City {
     public void setLon(double lon);
 
     public void setCountry(String country);
+
+    String getName();
 }

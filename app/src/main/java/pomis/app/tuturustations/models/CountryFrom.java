@@ -7,7 +7,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by romanismagilov on 20.10.16.
  */
 
-public class CountryFrom extends RealmObject implements Country {
+public class CountryFrom extends RealmObject implements Country, Tutu {
     @PrimaryKey
     public String title;
 

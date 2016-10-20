@@ -38,9 +38,11 @@ public class StationsParse {
     // Времененные переменные для записи в бд во время парсинга
     String cityTitle;
     String countryName;
+    String lastCountryName="";
     double cityLat;
     double cityLon;
     int cityId;
+    int lastCityId=0;
     Realm realm;
     String stationTitle;
     int stationId;
@@ -86,14 +88,16 @@ public class StationsParse {
                     jParser.nextToken();
 
                     switch (currentName) {
+                        case "countryTitle":
+                            countryName = jParser.getText();
+                            //Log.d(MY_TAG, "==================="+countryName);
+                            break;
                         case "cityTitle":
                             cityTitle = jParser.getText();
+//                            Log.d(MY_TAG, cityTitle);
                             break;
                         case "cityId":
                             cityId = jParser.getIntValue();
-                            break;
-                        case "countryTitle":
-                            countryName = jParser.getText();
                             break;
                         case "point":
                             while (jParser.nextToken() != JsonToken.END_OBJECT) {
@@ -118,6 +122,9 @@ public class StationsParse {
                                     if (currentName != null) {
                                         jParser.nextToken();
                                         switch (currentName) {
+                                            case "countryTitle":
+                                                countryName = jParser.getText();
+                                                break;
                                             case "stationTitle":
                                                 stationTitle = jParser.getText();
                                                 break;
@@ -145,71 +152,97 @@ public class StationsParse {
                                         }
                                     }
                                 }
-                                realm.executeTransaction(new Realm.Transaction() {
-                                    @Override
-                                    public void execute(Realm realm) {
-                                        switch (type) {
-                                            case FROM:
-                                                StationFrom station = new StationFrom();
-                                                station.setLat(stationLat);
-                                                station.setLon(stationLon);
-                                                station.setTitle(stationTitle);
-                                                station.setStationId(stationId);
-                                                realm.copyToRealmOrUpdate(station);
-                                                //Log.d(MY_TAG, "station saved: " + station.toString());
-                                                break;
 
-                                            case TO:
-                                                StationTo stationTo = new StationTo();
-                                                stationTo.setLat(stationLat);
-                                                stationTo.setLon(stationLon);
-                                                stationTo.setTitle(stationTitle);
-                                                stationTo.setStationId(stationId);
-                                                realm.copyToRealmOrUpdate(stationTo);
-                                                //Log.d(MY_TAG, "stationTO saved: " + stationTo.toString());
-                                                break;
-                                        }
-                                    }
-                                });
                             }
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    switch (type) {
+                                        case FROM:
+                                            StationFrom station = new StationFrom();
+                                            station.setLat(stationLat);
+                                            station.setLon(stationLon);
+                                            station.setTitle(stationTitle);
+                                            station.setStationId(stationId);
+                                            realm.copyToRealmOrUpdate(station);
+                                            //Log.d(MY_TAG, "station saved: " + station.toString());
+                                            break;
+
+                                        case TO:
+                                            StationTo stationTo = new StationTo();
+                                            stationTo.setLat(stationLat);
+                                            stationTo.setLon(stationLon);
+                                            stationTo.setTitle(stationTitle);
+                                            stationTo.setStationId(stationId);
+                                            realm.copyToRealmOrUpdate(stationTo);
+                                            //Log.d(MY_TAG, "stationTO saved: " + stationTo.toString());
+                                            break;
+                                    }
+                                }
+                            });
                             break;
                         default:
                             break;
                     }
+
                 }
+                if (!lastCountryName.equals(countryName))
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            lastCountryName = countryName;
+                            switch (type) {
+                                case TO:
+
+                                    CountryTo countryTo = new CountryTo();
+                                    countryTo.title = countryName;
+                                    realm.copyToRealmOrUpdate(countryTo);
+                                    break;
+
+                                case FROM:
+
+                                    CountryFrom countryFrom = new CountryFrom();
+                                    countryFrom.title = countryName;
+                                    realm.copyToRealmOrUpdate(countryFrom);
+
+//                                     Log.d(MY_TAG, "country written."+countryName+" Count: " + realm.where(CountryFrom.class).count());
+//                            realm.copyToRealm(countryFrom);
+                                    break;
+                            }
+                        }
+                    });
             }
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    switch (type){
-                        case TO:
-                            CityTo cityTo = new CityTo();
-                            cityTo.cityId = cityId;
-                            cityTo.name = cityTitle;
-                            cityTo.lat = cityLat;
-                            cityTo.lon = cityLon;
-                            realm.copyToRealmOrUpdate(cityTo);
+            if (lastCityId != cityId)
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        lastCityId = cityId;
+                        switch (type) {
+                            case TO:
+                                CityTo cityTo = new CityTo();
+                                cityTo.cityId = cityId;
+                                cityTo.name = cityTitle;
+                                cityTo.lat = cityLat;
+                                cityTo.lon = cityLon;
+                                cityTo.country = countryName;
+                                realm.copyToRealmOrUpdate(cityTo);
+                                break;
 
-                            CountryTo countryTo = new CountryTo();
-                            countryTo.title = countryName;
-                            realm.copyToRealmOrUpdate(countryTo);
-                            break;
+                            case FROM:
+                                CityFrom cityFrom = new CityFrom();
+                                cityFrom.cityId = cityId;
+                                cityFrom.name = cityTitle;
+                                cityFrom.lat = cityLat;
+                                cityFrom.lon = cityLon;
+                                cityFrom.country = countryName;
 
-                        case FROM:
-                            CityFrom cityFrom = new CityFrom();
-                            cityFrom.cityId = cityId;
-                            cityFrom.name = cityTitle;
-                            cityFrom.lat = cityLat;
-                            cityFrom.lon = cityLon;
-                            realm.copyToRealmOrUpdate(cityFrom);
-
-                            CountryFrom countryFrom = new CountryFrom();
-                            countryFrom.title = countryName;
-                            realm.copyToRealmOrUpdate(countryFrom);
-                            break;
+                                realm.copyToRealmOrUpdate(cityFrom);
+                                //Log.d(MY_TAG, "city saved/ " + cityFrom.toString());
+                                break;
+                        }
                     }
-                }
-            });
+                });
+
             token = jParser.nextToken().asString();
 
         }
