@@ -27,6 +27,7 @@ import pomis.app.tuturustations.models.StationTo;
  */
 
 public class StationsParse {
+
     enum Type {
         TO, FROM
     }
@@ -38,11 +39,12 @@ public class StationsParse {
     // Времененные переменные для записи в бд во время парсинга
     String cityTitle;
     String countryName;
-    String lastCountryName="";
+    String lastCountryName = "";
     double cityLat;
     double cityLon;
     int cityId;
-    int lastCityId=0;
+    String regionName;
+    int lastCityId = 0;
     Realm realm;
     String stationTitle;
     int stationId;
@@ -50,7 +52,8 @@ public class StationsParse {
     double stationLon;
 
     public void parse(StationsTask stationsTask, Context context, InputStream in) throws Exception {
-        realm = RealmInstance.getInstance(context);
+        realm = RealmInstance.getBackgroundInstance(context)
+        ;
         this.asyncTask = stationsTask;
         JsonFactory jfactory = new JsonFactory();
 
@@ -125,6 +128,9 @@ public class StationsParse {
                                             case "countryTitle":
                                                 countryName = jParser.getText();
                                                 break;
+                                            case "regionTitle":
+                                                regionName = jParser.getText();
+                                                break;
                                             case "stationTitle":
                                                 stationTitle = jParser.getText();
                                                 break;
@@ -161,8 +167,10 @@ public class StationsParse {
                                         case FROM:
                                             StationFrom station = new StationFrom();
                                             station.setLat(stationLat);
+                                            station.setCountry(countryName);
                                             station.setLon(stationLon);
                                             station.setTitle(stationTitle);
+                                            station.setRegion(regionName);
                                             station.setStationId(stationId);
                                             station.setCity(cityTitle);
                                             realm.copyToRealmOrUpdate(station);
@@ -173,7 +181,9 @@ public class StationsParse {
                                             StationTo stationTo = new StationTo();
                                             stationTo.setLat(stationLat);
                                             stationTo.setLon(stationLon);
+                                            stationTo.setCountry(countryName);
                                             stationTo.setTitle(stationTitle);
+                                            stationTo.setRegion(regionName);
                                             stationTo.setStationId(stationId);
                                             stationTo.setCity(cityTitle);
                                             realm.copyToRealmOrUpdate(stationTo);

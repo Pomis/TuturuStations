@@ -14,6 +14,25 @@ public class StationTo extends RealmObject implements Station, Tutu{
     public double lon;
     public String title;
     public String city;
+    public String region;
+    public String country;
+
+    @Override
+    public String getRegion() {
+        return region;
+    }
+    @Override
+    public void setRegion(String region) {
+        this.region = region;
+    }
+    @Override
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
     @Override
     public String toString() {
         return title + ", " + lat + ":" + lon + ", id:" + stationId;

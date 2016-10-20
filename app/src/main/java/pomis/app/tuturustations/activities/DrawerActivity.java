@@ -1,5 +1,6 @@
 package pomis.app.tuturustations.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import pomis.app.tuturustations.R;
+import pomis.app.tuturustations.data.RealmInstance;
 import pomis.app.tuturustations.fragments.AboutFragment;
 import pomis.app.tuturustations.fragments.TableFragment;
 import pomis.app.tuturustations.network.StationsTask;
@@ -24,8 +26,11 @@ import pomis.app.tuturustations.network.StationsTask;
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private int currentFragment;
+    Fragment selectedFragment;
     Toolbar toolbar;
+
+    public static String name;
+    public static String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +87,7 @@ public class DrawerActivity extends AppCompatActivity
         clearContainer();
 
         int id = item.getItemId();
-        currentFragment = id;
-        Fragment selectedFragment = new Fragment();
+        selectedFragment = new Fragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (id) {
             case R.id.nav_table:
@@ -111,4 +115,20 @@ public class DrawerActivity extends AppCompatActivity
             );
         transaction.commit();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RealmInstance.closeAll();
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        name = getIntent().getStringExtra("result");
+//        type = getIntent().getStringExtra("type");
+//        if (selectedFragment instanceof TableFragment){
+//            ((TableFragment) selectedFragment).updateText();
+//        }
+//    }
 }

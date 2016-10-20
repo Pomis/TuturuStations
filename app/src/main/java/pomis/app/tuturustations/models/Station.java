@@ -24,4 +24,10 @@ public interface Station {
     double getLon();
 
     String getCity();
+
+    String getRegion();
+
+    String getCountry();
+
+    void setRegion(String region);
 }

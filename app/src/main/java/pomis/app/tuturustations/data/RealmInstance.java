@@ -7,13 +7,36 @@ import io.realm.RealmConfiguration;
 
 
 public class RealmInstance {
-    static public Realm getInstance(Context context) {
-        Realm.init(context);
-        RealmConfiguration config = new RealmConfiguration.Builder()
-                .deleteRealmIfMigrationNeeded()
-                .build();
+    static Realm instance;
+    static Realm instanceBg;
 
-        return Realm.getInstance(config);
+    static public Realm getInstance(Context context) {
+        if (instance==null) {
+            Realm.init(context);
+            RealmConfiguration config = new RealmConfiguration.Builder()
+                    .deleteRealmIfMigrationNeeded()
+                    .build();
+            return Realm.getInstance(config);
+        } else {
+            return instance;
+        }
     }
 
+    static public Realm getBackgroundInstance(Context context) {
+        if (instanceBg==null) {
+            Realm.init(context);
+            RealmConfiguration config = new RealmConfiguration.Builder()
+                    .deleteRealmIfMigrationNeeded()
+                    .build();
+            return Realm.getInstance(config);
+        } else {
+            return instanceBg;
+        }
+    }
+
+
+    public static void closeAll() {
+        if (instance!=null) instance.close();
+        if (instanceBg!=null) instanceBg.close();
+    }
 }

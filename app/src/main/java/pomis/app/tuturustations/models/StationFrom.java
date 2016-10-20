@@ -8,13 +8,34 @@ import io.realm.annotations.PrimaryKey;
  * Created by romanismagilov on 20.10.16.
  */
 
-public class StationFrom extends RealmObject implements Station, Tutu{
+public class StationFrom extends RealmObject implements Station, Tutu {
     @PrimaryKey
     public int stationId;
     public double lat;
     public double lon;
     public String title;
+    public String country;
     public String city;
+    public String region;
+
+    @Override
+    public String getRegion() {
+        return region;
+    }
+
+    @Override
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    @Override
+    public void setRegion(String region) {
+        this.region = region;
+    }
 
     @Override
     public String toString() {
@@ -49,7 +70,7 @@ public class StationFrom extends RealmObject implements Station, Tutu{
         return city;
     }
 
-    public void setCity(String city){
+    public void setCity(String city) {
         this.city = city;
     }
 

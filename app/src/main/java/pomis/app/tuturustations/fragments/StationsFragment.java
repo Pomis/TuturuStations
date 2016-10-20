@@ -90,6 +90,7 @@ public class StationsFragment extends Fragment {
         return view;
     }
 
+
     private void initAdapter(final String searchParam) {
         if (searchParam.equals(""))
             adapter = new TutusAdapter(getContext(), 0,

@@ -7,11 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import pomis.app.tuturustations.R;
+import pomis.app.tuturustations.activities.DrawerActivity;
 import pomis.app.tuturustations.activities.StationsActivity;
 
 /**
@@ -19,6 +22,15 @@ import pomis.app.tuturustations.activities.StationsActivity;
  */
 public class TableFragment extends Fragment {
 
+
+    @BindView(R.id.tv_from)
+    TextView tvFrom;
+
+    @BindView(R.id.tv_to)
+    TextView tvTo;
+
+    @BindView(R.id.tv_when)
+    TextView tvWhen;
 
     private static final int REQUEST_FROM = 0x1;
     private static final int REQUEST_TO = 0x2;
@@ -60,4 +72,18 @@ public class TableFragment extends Fragment {
         // Required empty public constructor
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data != null) {
+            super.onActivityResult(requestCode, resultCode, data);
+            String name = data.getStringExtra("result");
+            String type = data.getStringExtra("type");
+            if (type.equals("from")) {
+                tvFrom.setText(name);
+            } else if (type.equals("to")) {
+                tvTo.setText(name);
+            }
+        }
+    }
 }

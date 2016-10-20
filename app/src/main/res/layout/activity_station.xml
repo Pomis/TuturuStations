@@ -11,18 +11,18 @@
         tools:context="pomis.app.tuturustations.activities.StationActivity" />
 
     <fragment
-        android:layout_marginTop="240dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:name="pomis.app.tuturustations.fragments.DetailsFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/details" />
 
     <TextView
         android:text="Название станции"
         android:textSize="34dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimaryDark"
         android:id="@+id/tv_station_title"
@@ -34,4 +34,15 @@
         android:paddingBottom="8dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_select"
+        android:src="@drawable/check"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="-26dp"
+        android:layout_above="@+id/details"
+        android:layout_alignRight="@+id/details"
+        android:layout_alignEnd="@+id/details" />
 </RelativeLayout>
