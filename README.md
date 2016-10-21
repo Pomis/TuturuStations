@@ -2,7 +2,7 @@
 Тестовое задание для вакансии младшего Android-разработчика.
 
 ####Скриншоты:
-![6](screenshots/6.png)
+![6](screenshots/6.png?raw=tru)
 ![5](screenshots/5.png)
 ![4](screenshots/4.png)
 ![3](screenshots/3.png)

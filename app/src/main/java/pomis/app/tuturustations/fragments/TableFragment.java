@@ -107,7 +107,7 @@ public class TableFragment extends Fragment {
                 selectedDay = dayOfMonth;
                 selectedMonth = monthOfYear;
                 selectedYear = year;
-                tvWhen.setText(dayOfMonth + "." + monthOfYear + 1 + "." + year);
+                tvWhen.setText(dayOfMonth + "." + (monthOfYear + 1) + "." + year);
             }
         }, selectedYear, selectedMonth, selectedDay);
         tpd.show();
