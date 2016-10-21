@@ -47,6 +47,7 @@ public class StationsFragment extends Fragment {
     Class cityClass;
     Class stationClass;
     Class countryClass;
+    String selectedCityName;
     private Unbinder unbinder;
     private TutusAdapter adapter;
     private Realm realm;
@@ -131,11 +132,11 @@ public class StationsFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                         stationsExpanded = false;
                     } else if (adapter.get(position) instanceof City) {
-                        String city = ((City) adapter.get(position)).getTitle();
+                        selectedCityName = ((City) adapter.get(position)).getTitle();
                         adapter.selectStationsToDelete();
                         adapter.addAll(position,
                                 realm.where(stationClass)
-                                        .equalTo("city", city)
+                                        .equalTo("city", selectedCityName)
                                         .findAll());
                         adapter.notifyDataSetChanged();
                         stationsExpanded = true;
@@ -151,6 +152,7 @@ public class StationsFragment extends Fragment {
     private void openStation(String name) {
         startActivityForResult(
                 new Intent(getContext(), StationActivity.class)
+                        .putExtra("city", selectedCityName)
                         .putExtra("name", name)
                         .putExtra("type", type),
                 REQUEST_CODE);

@@ -89,7 +89,7 @@ public class StationActivity extends FragmentActivity implements OnMapReadyCallb
     void select() {
         Intent intent = new Intent()
                 .putExtra("type", type)
-                .putExtra("result", name );
+                .putExtra("result", getIntent().getStringExtra("city")+", " + name);
         setResult(0, intent);
         finish();
     }
