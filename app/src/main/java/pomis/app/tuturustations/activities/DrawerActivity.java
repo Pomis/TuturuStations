@@ -29,7 +29,9 @@ import pomis.app.tuturustations.data.RealmInstance;
 import pomis.app.tuturustations.fragments.AboutFragment;
 import pomis.app.tuturustations.fragments.TableFragment;
 import pomis.app.tuturustations.network.StationsTask;
-
+/*
+ * Активность-оператор бокового меню. По совместительству, главная активность.
+ */
 public class DrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

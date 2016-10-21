@@ -24,7 +24,7 @@ import pomis.app.tuturustations.activities.DrawerActivity;
 import pomis.app.tuturustations.activities.StationsActivity;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Фрагмент расписания
  */
 public class TableFragment extends Fragment {
 
@@ -61,10 +61,9 @@ public class TableFragment extends Fragment {
                 .getBoolean("done", false))
             new AlertDialog
                     .Builder(getContext())
-                    .setMessage("Приложению необходимо загрузить базу станций. Это займёт некоторое время.")
+                    .setMessage("Приложению необходимо загрузить базу станций (~5Мб). Это займёт некоторое время.")
                     .setTitle("Добро пожаловать!")
                     .show();
-
     }
 
 

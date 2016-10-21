@@ -34,7 +34,7 @@ import pomis.app.tuturustations.models.StationFrom;
 import pomis.app.tuturustations.models.StationTo;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Фрагмент со списком станций
  */
 public class StationsFragment extends Fragment {
 
@@ -60,6 +60,7 @@ public class StationsFragment extends Fragment {
     }
 
 
+    // Прочесть данные из интента для того, чтобы фрагмент понял, какие именно станции нужно отображать.
     void readIntent() {
         type = getActivity()
                 .getIntent()
@@ -91,6 +92,7 @@ public class StationsFragment extends Fragment {
     }
 
 
+    // Инициализация адаптера. Параметр — значение поиска, по умолчанию — пустая строка.
     private void initAdapter(final String searchParam) {
         if (searchParam.equals(""))
             adapter = new TutusAdapter(getContext(), 0,

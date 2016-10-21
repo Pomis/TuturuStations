@@ -18,13 +18,14 @@ import pomis.app.tuturustations.models.Station;
 import pomis.app.tuturustations.models.Tutu;
 
 /**
- * Created by romanismagilov on 20.10.16.
+ * Адаптер для станций, городов, стран
  */
 
 public class TutusAdapter extends ArrayAdapter {
 
     private final List<Tutu> tutusList;
-    List<Tutu> toRemove = new ArrayList<>();;
+    List<Tutu> toRemove = new ArrayList<>();
+    ;
 
 
     public TutusAdapter(Context context, int resource, List objects) {
@@ -37,31 +38,22 @@ public class TutusAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (tutusList.get(position) instanceof Country) {
             CountryViewHolder holder;
-//            if (convertView == null) {
-                convertView = LayoutInflater
-                        .from(getContext())
-                        .inflate(R.layout.item_country, null);
-                holder = new CountryViewHolder();
-                holder.country = (TextView) convertView.findViewById(R.id.tv_country);
-                convertView.setTag(holder);
-//            } else {
-//                holder = (CountryViewHolder) convertView.getTag();
-//            }
+            convertView = LayoutInflater
+                    .from(getContext())
+                    .inflate(R.layout.item_country, null);
+            holder = new CountryViewHolder();
+            holder.country = (TextView) convertView.findViewById(R.id.tv_country);
+            convertView.setTag(holder);
             Country country = (Country) tutusList.get(position);
             holder.country.setText(country.getTitle());
         } else if (tutusList.get(position) instanceof City) {
             CityViewHolder holder;
-//            if (convertView == null) {
-                convertView = LayoutInflater
-                        .from(getContext())
-                        .inflate(R.layout.item_city, null);
-                holder = new CityViewHolder();
-                holder.city = (TextView) convertView.findViewById(R.id.tv_city);
-                convertView.setTag(holder);
-//            }
-//            else {
-//                holder = (CityViewHolder) convertView.getTag();
-//            }
+            convertView = LayoutInflater
+                    .from(getContext())
+                    .inflate(R.layout.item_city, null);
+            holder = new CityViewHolder();
+            holder.city = (TextView) convertView.findViewById(R.id.tv_city);
+            convertView.setTag(holder);
             City city = (City) tutusList.get(position);
             holder.city.setText(city.getTitle());
         } else if (tutusList.get(position) instanceof Station) {
@@ -79,16 +71,16 @@ public class TutusAdapter extends ArrayAdapter {
     }
 
     public void selectCitiesToDelete() {
-        for (Tutu tutu : tutusList){
-            if (tutu instanceof City){
+        for (Tutu tutu : tutusList) {
+            if (tutu instanceof City) {
                 toRemove.add(tutu);
             }
         }
     }
 
     public void selectStationsToDelete() {
-        for (Tutu tutu : tutusList){
-            if (tutu instanceof Station){
+        for (Tutu tutu : tutusList) {
+            if (tutu instanceof Station) {
                 toRemove.add(tutu);
             }
         }
@@ -117,13 +109,13 @@ public class TutusAdapter extends ArrayAdapter {
         TextView station;
     }
 
-    public void addAll(int location, List objects){
-        tutusList.addAll(location+1, objects);
+    public void addAll(int location, List objects) {
+        tutusList.addAll(location + 1, objects);
         tutusList.removeAll(toRemove);
         toRemove.clear();
     }
 
-    public Tutu get(int position){
+    public Tutu get(int position) {
         return tutusList.get(position);
     }
 }

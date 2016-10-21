@@ -28,7 +28,7 @@ import pomis.app.tuturustations.data.RealmInstance;
 import pomis.app.tuturustations.models.City;
 
 /**
- * Created by romanismagilov on 20.10.16.
+ * Асинхронная операция, подргужающая JSON.
  */
 
 public class StationsTask extends AsyncTask {
@@ -57,10 +57,12 @@ public class StationsTask extends AsyncTask {
 
         } catch (Exception e) {
             e.printStackTrace();
+            publishProgress("Ошибка подключения!");
         }
         return null;
     }
 
+    // Отмечаем, что база загружена.
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);

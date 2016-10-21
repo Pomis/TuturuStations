@@ -6,7 +6,7 @@ import java.util.List;
 import pomis.app.tuturustations.models.City;
 
 /**
- * Created by romanismagilov on 20.10.16.
+ * Поиск, нечувствительный к регистру
  */
 
 public class InsensitiveSearch {

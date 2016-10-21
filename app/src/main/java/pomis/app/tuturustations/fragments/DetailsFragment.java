@@ -24,7 +24,7 @@ import pomis.app.tuturustations.models.StationFrom;
 import pomis.app.tuturustations.models.StationTo;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Фрагмент детального просмотра станции
  */
 public class DetailsFragment extends Fragment {
 
@@ -58,6 +58,7 @@ public class DetailsFragment extends Fragment {
         return view;
     }
 
+    // Заполнение тестовых полей в зависимости от полученных из интента данных
     void readIntent() {
         String name = activity.getIntent().getStringExtra("name");
         String type = activity.getIntent().getStringExtra("type");

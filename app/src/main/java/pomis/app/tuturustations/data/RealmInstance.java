@@ -5,7 +5,9 @@ import android.content.Context;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-
+/*
+ * Тут два синглтона realm. Один для фонового потока, другой для UI.
+ */
 public class RealmInstance {
     static Realm instance;
     static Realm instanceBg;

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by romanismagilov on 20.10.16.
+ * Получение адреса через долготу и широту
  */
 
 public class AddressHelper {

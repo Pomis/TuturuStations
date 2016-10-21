@@ -14,7 +14,7 @@ import pomis.app.tuturustations.BuildConfig;
 import pomis.app.tuturustations.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Фрагмент информации о приложении.
  */
 public class AboutFragment extends Fragment {
 
