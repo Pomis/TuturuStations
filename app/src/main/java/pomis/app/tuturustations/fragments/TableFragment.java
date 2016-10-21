@@ -1,12 +1,18 @@
 package pomis.app.tuturustations.fragments;
 
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -42,7 +48,23 @@ public class TableFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_table, container, false);
         unbinder = ButterKnife.bind(this, view);
+        selectedDay = 21;
+        selectedMonth = 10;
+        selectedYear = 2016;
+        showInfo();
         return view;
+    }
+
+    private void showInfo() {
+        if (!PreferenceManager
+                .getDefaultSharedPreferences(getContext())
+                .getBoolean("done", false))
+            new AlertDialog
+                    .Builder(getContext())
+                    .setMessage("Приложению необходимо загрузить базу станций. Это займёт некоторое время.")
+                    .setTitle("Добро пожаловать!")
+                    .show();
+
     }
 
 
@@ -70,6 +92,26 @@ public class TableFragment extends Fragment {
 
     public TableFragment() {
         // Required empty public constructor
+    }
+
+    int selectedDay;
+    int selectedMonth;
+    int selectedYear;
+
+    @OnClick(R.id.tv_when)
+    void openWhen() {
+        Log.d("kek", "lel opened");
+//        getActivity().showDialog(1);
+        DatePickerDialog tpd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                selectedDay = dayOfMonth;
+                selectedMonth = monthOfYear;
+                selectedYear = year;
+                tvWhen.setText(dayOfMonth + "." + monthOfYear + 1 + "." + year);
+            }
+        }, selectedYear, selectedMonth, selectedDay);
+        tpd.show();
     }
 
 

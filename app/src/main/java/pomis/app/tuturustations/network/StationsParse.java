@@ -65,11 +65,11 @@ public class StationsParse {
                 jParser.nextToken();
                 switch (fieldname) {
                     case "citiesFrom":
-                        stationsTask.publish("Города отправления...");
+                        stationsTask.publish("Загрузка станций отправления...");
                         parseStationArray(Type.FROM, jParser);
                         break;
                     case "citiesTo":
-                        stationsTask.publish("Города прибытия...");
+                        stationsTask.publish("Загрузка станция прибытия...");
                         parseStationArray(Type.TO, jParser);
                         break;
                 }
@@ -174,7 +174,6 @@ public class StationsParse {
                                             station.setStationId(stationId);
                                             station.setCity(cityTitle);
                                             realm.copyToRealmOrUpdate(station);
-                                            //Log.d(MY_TAG, "station saved: " + station.toString());
                                             break;
 
                                         case TO:
@@ -187,7 +186,6 @@ public class StationsParse {
                                             stationTo.setStationId(stationId);
                                             stationTo.setCity(cityTitle);
                                             realm.copyToRealmOrUpdate(stationTo);
-                                            //Log.d(MY_TAG, "stationTO saved: " + stationTo.toString());
                                             break;
                                     }
                                 }
